@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: webhook-notification-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/webhookdb
+    username: webhook
+    password: webhook
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  data:
+    redis:
+      host: localhost
+      port: 6380
+
+  mail:
+    host: localhost
+    port: 1025
+    # Mailhog accepts anything and never authenticates
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: webhook-notification-service
+
+webhook:
+  dispatcher:
+    enabled: true
+    interval-ms: 2000
+    batch-size: 50
+    lock-ttl-seconds: 30
+    connect-timeout-ms: 3000
+    read-timeout-ms: 5000
+  retry:
+    max-attempts: 5
+    base-delay-seconds: 5
+    max-delay-seconds: 900
+  idempotency:
+    ttl-hours: 24
+
+logging:
+  level:
+    br.com.portfolio.webhook: DEBUG
