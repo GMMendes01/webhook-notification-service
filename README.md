@@ -1,5 +1,7 @@
 # Webhook Notification Service
 
+![CI](https://github.com/GMMendes01/webhook-notification-service/actions/workflows/ci.yml/badge.svg)
+
 Serviço back-end que recebe **eventos** via API, distribui para **assinantes** (webhooks HTTP + e-mail),
 reprocessa falhas com **backoff exponencial**, isola entregas irrecuperáveis em **dead-letter** e expõe
 **métricas**.
